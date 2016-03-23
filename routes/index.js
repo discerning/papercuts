@@ -25,23 +25,6 @@ router.get('/auth/oauth2/callback',
     })
 );
 
-router.get('/auth/cern',
-    passport.authenticate('saml')
-);
-
-router.get('/auth/cern/callback',
-    passport.authenticate('saml', {
-        successRedirect: '/home',
-        failureRedirect: '/',
-        failureFlash: true
-    })
-);
-
-router.get('/auth/cern/metadata.xml', function(req, res){
-    res.type('application/xml');
-    res.send(200, req.saml.generateServiceProviderMetadata());
-});
-
 router.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');

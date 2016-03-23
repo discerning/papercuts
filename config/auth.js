@@ -1,12 +1,5 @@
 module.exports = {
     cern: {
-        path: '/auth/cern/callback',
-        entryPoint: 'https://cern.ch/login',
-        issuer: 'papercuts-saml',
-        host: 'discerning-papercuts.herokuapp.com',
-        protocol: 'https://'
-    },
-    oauth2: {
         authorizationURL: 'https://oauth.web.cern.ch/OAuth/Authorize',
         tokenURL: 'https://oauth.web.cern.ch/OAuth/Token',
         clientID: 'papercuts',
