@@ -13,6 +13,18 @@ var isLoggedIn = function (req, res, next) {
     res.redirect('/');
 };
 
+router.get('/auth/oauth2',
+    passport.authenticate('oauth2')
+);
+
+router.get('/auth/oauth2/callback',
+    passport.authenticate('oauth2', {
+        successRedirect: '/home',
+        failureRedirect: '/',
+        failureFlash: true
+    })
+);
+
 router.get('/auth/cern',
     passport.authenticate('saml')
 );

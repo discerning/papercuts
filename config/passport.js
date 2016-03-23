@@ -2,38 +2,41 @@
 var config = require('./index');
 
 var SamlStrategy = require('passport-saml').Strategy;
+var OAuth2Strategy = require('passport-oauth').OAuth2Strategy.Strategy;
 
 module.exports = function(passport) {
 
-    var saml = new SamlStrategy(
-        {
-            path: config.auth.cern.path,
-            entryPoint: config.auth.cern.entryPoint,
-            issuer: config.auth.cern.issuer,
-            host: config.auth.cern.host,
-            protocol: config.auth.cern.protocol
-        },
+    /*
+    findByEmail(profile.email, function(err, profile){
+        if(err) return done(err);
+        return done(null, profile);
+    });
+    */
+
+    var saml = new SamlStrategy(config.auth.cern,
         function(profile, done){
-            /*
-            findByEmail(profile.email, function(err, user){
-                if(err) return done(err);
-                return done(null, user);
-            });
-            */
             console.log('Profile: %j', profile);
-            return done(null, user);
+            return done(null, profile);
+        }
+    );
+
+    var oauth2 = new OAuth2Strategy(config.auth.oauth2,
+        function(accessToken, refreshToken, profile, done){
+            console.log('Profile: %j', profile);
+            return done(null, profile);
         }
     );
 
     passport.use(saml);
+    passport.use(oauth2);
 
-    passport.serializeUser(function(user, done){
-        done(null, user);
+    passport.serializeUser(function(profile, done){
+        done(null, profile);
     });
 
-    passport.deserializeUser(function(user, done){
-        done(null, user);
+    passport.deserializeUser(function(profile, done){
+        done(null, profile);
     });
 
-    return saml;
+    return {saml: saml, oauth2: oauth2};
 };
