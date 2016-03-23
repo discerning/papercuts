@@ -9,7 +9,9 @@ module.exports = function(passport) {
         {
             path: config.auth.cern.path,
             entryPoint: config.auth.cern.entryPoint,
-            issuer: config.auth.cern.issuer
+            issuer: config.auth.cern.issuer,
+            host: config.auth.cern.host,
+            protocol: config.auth.cern.protocol
         },
         function(profile, done){
             /*
