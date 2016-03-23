@@ -1,3 +1,5 @@
+var config = require('./config');
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -9,6 +11,16 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+// Configuring passport
+var passport = require('passport');
+var expressSession = require('express-session');
+app.use(expressSession({secret: config.keys.expressSession}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+var passportConfig = require('./config/passport');
+passportConfig(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
