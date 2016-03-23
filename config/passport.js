@@ -5,7 +5,7 @@ var SamlStrategy = require('passport-saml').Strategy;
 
 module.exports = function(passport) {
 
-    passport.use(new SamlStrategy(
+    var saml = new SamlStrategy(
         {
             path: config.auth.cern.path,
             entryPoint: config.auth.cern.entryPoint,
@@ -20,8 +20,10 @@ module.exports = function(passport) {
             */
             console.log('Profile: %j', profile);
             return done(null, user);
-        })
+        }
     );
+
+    passport.use(saml);
 
     passport.serializeUser(function(user, done){
         done(null, user);
@@ -31,4 +33,5 @@ module.exports = function(passport) {
         done(null, user);
     });
 
+    return saml;
 };

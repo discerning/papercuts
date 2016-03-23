@@ -20,7 +20,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 var passportConfig = require('./config/passport');
-passportConfig(passport);
+var saml = passportConfig(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,8 +34,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// store the saml instance so we can generate the xml
 // expose the user object to locals for rendering
 app.use(function(req, res, next){
+    req.saml = saml;
     res.locals = {user: req.user};
     next();
 });

@@ -1,6 +1,5 @@
 var express = require('express');
 var passport = require('passport');
-var saml = require('passport-saml');
 var router = express.Router();
 
 /* Authentication Sessions */
@@ -28,7 +27,7 @@ router.get('/auth/cern/callback',
 
 router.get('/auth/cern/metadata.xml', function(req, res){
     res.type('application/xml');
-    res.send(200, saml.generateServiceProviderMetadata());
+    res.send(200, req.saml.generateServiceProviderMetadata());
 });
 
 router.get('/logout', function(req, res){
