@@ -34,6 +34,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// expose the user object to locals for rendering
+app.use(function(req, res, next){
+    res.locals = {user: req.user};
+    next();
+});
+
 app.use('/', routes);
 app.use('/users', users);
 
