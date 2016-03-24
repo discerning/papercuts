@@ -13,6 +13,7 @@
     "express-session": "^1.13.0",
     "firebase": "^2.4.1",
     "firebase-token-generator": "^2.0.0",
+    "https": "^1.0.0",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
     "passport": "^0.3.2",

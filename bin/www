@@ -15,17 +15,24 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+var server;
+if(app.get('env') === 'production'){
+    var https = require('https');
+    var fs = require('fs');
+    var options = {
+        key: fs.readFileSync(process.env.SSL_KEY),
+        cert: fs.readFileSync(process.env.SSL_CERT)
+    };
+    server = https.createServer(options, app).listen(443);
 
-var server = http.createServer(app);
+    http.createServer(app).listen(80).get('*', function(req, res){
+        res.redirect('https://papercuts.cern.ch' + req.url);
+    });
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+} else {
+    server = http.createServer(app).listen(port);
+}
 
-server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
