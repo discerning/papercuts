@@ -39,4 +39,15 @@ router.get('/home', isLoggedIn, function(req, res, next) {
     res.render('home', {});
 });
 
+router.get('/analyses/:analysis?', function(req, res, next) {
+    var analysis = req.params.analysis;
+    if(!analysis){
+        // list the analyses
+        res.render('analyses', {});
+    } else {
+        // get a specific analysis
+        res.render('analysis', {});
+    }
+});
+
 module.exports = router;
