@@ -9,4 +9,4 @@ To get started::
 
 To use on production, run::
 
-    ENV=production forever start bin/www
+    forever start bin/www
