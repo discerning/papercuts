@@ -18,9 +18,7 @@ var expressSession = require('express-session');
 app.use(expressSession({secret: config.keys.expressSession}));
 app.use(passport.initialize());
 app.use(passport.session());
-
-var passportConfig = require('./config/passport');
-passportConfig(passport);
+require('./services/passport')(passport);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

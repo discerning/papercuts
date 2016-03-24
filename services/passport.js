@@ -1,5 +1,5 @@
 // load the auth variables
-var config = require('./index');
+var config = require('../config');
 
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy.Strategy;
 
