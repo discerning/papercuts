@@ -15,7 +15,7 @@ var app = express();
 // Configuring passport
 var passport = require('passport');
 var expressSession = require('express-session');
-app.use(expressSession({secret: config.keys.expressSession}));
+app.use(expressSession({secret: config.services.express_session.secret}));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./services/passport')(passport);

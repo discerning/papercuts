@@ -5,7 +5,7 @@ var OAuth2Strategy = require('passport-oauth').OAuth2Strategy.Strategy;
 
 module.exports = function(passport) {
 
-    var oauth2 = new OAuth2Strategy(config.auth.cern,
+    var oauth2 = new OAuth2Strategy(config.services.cern,
         function(accessToken, refreshToken, profile, done){
             console.log('Profile: %j', profile);
             return done(null, profile);
