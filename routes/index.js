@@ -47,8 +47,8 @@ router.get('/analyses', function(req, res, next) {
         var analyses = []
         if(snapshot.exists()){
             snapshot.forEach(function(snapshotChild){
-                console.log(snapshotChild.val());
-                analyses.push(snapshotChild.val());
+                console.log(snapshotChild.key());
+                analyses.push(snapshotChild.key());
             });
         }
         res.render('analyses', {analyses: analyses});
@@ -58,7 +58,7 @@ router.get('/analyses', function(req, res, next) {
 
 router.get('/analysis/:analysis', function(req, res, next) {
     var analysis = req.params.analysis;
-    firebase.child(analysis).once("value", function(snapshot){
+    firebase.child('analyses/'+analysis).once("value", function(snapshot){
         if(!snapshot.exists()){
             res.status(400);
             return next(new Error('An analysis by that name does not exist!'));
@@ -68,7 +68,7 @@ router.get('/analysis/:analysis', function(req, res, next) {
 
 router.get('/analysis/:analysis/create', function(req, res, next) {
     var analysis = req.params.analysis;
-    firebase.child(analysis).once("value", function(snapshot){
+    firebase.child('analyses/'+analysis).once("value", function(snapshot){
         if(snapshot.exists()){
             res.status(400);
             return next(new Error('An analysis by that name already exists!'));
