@@ -9,7 +9,12 @@ To get started::
 
 To use on production, run::
 
-    forever start bin/www
+    git pull
+    npm install
+    forever stop papercuts
+    forever start --uid "papercuts" bin/www
+
+Note: sometimes if you change the environment variable, the ``forever`` process won't see it. The easiest thing to do is exit the computer, log back in (after updating the env. variables), and then start the process again. It should pick up the new variable.
 
 Configuration Variables
 -----------------------
