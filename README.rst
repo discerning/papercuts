@@ -47,6 +47,8 @@ Schema
 
 All of our schema is located in `public/js/schema/ <public/js/schema/>`_. Below, we describe some of the schema definitions in plaintext. Please refer to the specific documents if you are still confused.
 
+If you wish to check that your JSON output conforms to our schema, try the online `JSON Schema Lint <http://jsonschemalint.com/draft4/#>`_ website which is a fantastic resource.
+
 Analysis Cutflow
 ~~~~~~~~~~~~~~~~
 
