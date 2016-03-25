@@ -61,7 +61,7 @@ For example, the following JSON is a valid cutflow::
         {"jet_multiplicity": 150000},
         {"bjet_multiplicity": 63000},
         {"dphimetmin_geq_0p4": 23000},
-        {"lepton_veto", 1200}
+        {"lepton_veto": 1200}
     ]
 
 Please remember that the order in the array will **always** be preserved. In particular, the cutflow name has a few requirements:
