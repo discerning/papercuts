@@ -54,7 +54,17 @@ Analysis Cutflow
 
     {"cutflow_name": 123012.341}
 
-In particular, the cutflow name has a few requirements:
+For example, the following JSON is a valid cutflow::
+
+    [
+        {"duplicate_event": 200000},
+        {"jet_multiplicity": 150000},
+        {"bjet_multiplicity": 63000},
+        {"dphimetmin_geq_0p4": 23000},
+        {"lepton_veto", 1200}
+    ]
+
+Please remember that the order in the array will **always** be preserved. In particular, the cutflow name has a few requirements:
 
 - starts with a non-numeric, non-underscore character
 - at least one character
