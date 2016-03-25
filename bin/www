@@ -24,7 +24,7 @@ if(config.services.ssl.enabled){
         key: fs.readFileSync(process.env.SSL_KEY),
         cert: fs.readFileSync(process.env.SSL_CERT)
     };
-    server = https.createServer(options, app).listen(443);
+    server = https.createServer(options, app).listen(config.services.ssl.port);
 
     // create the insecure server (don't attach anything to it)
     http.createServer(app).listen(80);
