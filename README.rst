@@ -73,4 +73,17 @@ Please remember that the order in the array will **always** be preserved. In par
 - at most 32 characters
 - only alphanumeric and underscore characters are allowed
 
-The value of the cutflow should always be numeric. A number inside a string is not allowed.
+The value of the cutflow has a few requirements as well:
+
+- must be numeric (a number inside a string does not count)
+- must be non-negative (zero or greater-than-zero)
+
+Lastly, there should not be two instances of the same cutflow inside the array. That means something like::
+
+    [
+        {"duplicate_event": 200000},
+        {"jet_multiplicity": 150000},
+        {"duplicate_event": 200000}
+    ]
+
+will be rejected.
