@@ -12,5 +12,9 @@ module.exports = {
     firebase: {
         url: 'https://papercuts.firebaseio.com/',
         secret: (typeof process.env.FIREBASE_SECRET === 'undefined') ? 'secret' : process.env.FIREBASE_SECRET
+    },
+    ssl: {
+        enabled: (typeof process.env.PAPERCUTS_SSL === 'undefined' || process.env.PAPERCUTS_SSL !== 'true') ? false : true,
+        port: 443
     }
 };

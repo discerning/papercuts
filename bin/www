@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('papercuts:server');
 var http = require('http');
+var config = require('../config');
 
 /**
  * Get port from environment and store in Express.
@@ -15,8 +16,8 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-var server;
-if(app.get('env') === 'production'){
+// configure SSL if enabled
+if(config.services.ssl.enabled){
     var https = require('https');
     var fs = require('fs');
     var options = {
@@ -25,10 +26,14 @@ if(app.get('env') === 'production'){
     };
     server = https.createServer(options, app).listen(443);
 
-    http.createServer(app).listen(80).get('*', function(req, res){
-        res.redirect('https://papercuts.cern.ch' + req.url);
-    });
+    // create the insecure server (don't attach anything to it)
+    http.createServer(app).listen(80);
 
+    // ensure secure
+    app.all('*', function(req, res, next){
+        if(req.secure){ return next(); };
+        res.redirect('https://' + req.hostname + req.url); // handle port numbers if you need nondefaults
+    });
 } else {
     server = http.createServer(app).listen(port);
 }
