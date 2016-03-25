@@ -32,3 +32,12 @@ Variable                  Brief Description
 ``SSL_CERT``              The path to the SSL Host CERT
 ``NODE_ENV``              Set to ``"production"`` or ``"development"``
 ========================= ============================================
+
+SSL Setup
+--------------
+
+The Certificates where obtained using this command
+
+    cern-get-certificate --autoenroll
+    
+and are stored under the paths printed to stdout. We copy the private key and cert files to the locations configured in the `SSL_*` config vars
