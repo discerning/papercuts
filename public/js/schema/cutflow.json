@@ -7,12 +7,13 @@
   "items": {
     "type": "object",
     "patternProperties": {
-      "^[a-z_]{1,32}$": {
+      "^[a-z_]{1}[a-z0-9_]{,31}$": {
         "type": "number",
         "minimum": 0,
         "exclusiveMinimum": false
       }
     },
+    "additionalProperties": false,
     "minProperties": 1,
     "maxProperties": 1
   },
