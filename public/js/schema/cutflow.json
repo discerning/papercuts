@@ -1,0 +1,22 @@
+{
+  "title": "Analysis Cutflow Format",
+  "description": "This is a schema defining the strict format for analysis cutflows you post to me.",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "patternProperties": {
+      "^[a-z_]{1,32}$": {
+        "type": "number",
+        "minimum": 0,
+        "exclusiveMinimum": false
+      }
+    },
+    "minProperties": 1,
+    "maxProperties": 1
+  },
+  "minItems": 1,
+  "additionalItems": false,
+  "uniqueItems": true
+}
