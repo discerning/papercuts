@@ -18,6 +18,7 @@ app.set('port', port);
 
 // configure SSL if enabled
 if(config.services.ssl.enabled){
+    console.log("Enabling SSL");
     var https = require('https');
     var fs = require('fs');
     var options = {
