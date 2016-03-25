@@ -12,6 +12,15 @@ var api = require('./routes/api');
 
 var app = express();
 
+if(config.services.ssl.enabled){
+    // ensure secure
+    app.all('*', function(req, res, next){
+        if(req.secure){ return next(); };
+        console.log('Redirecting user from insecure http to secure https');
+        res.redirect('https://' + req.hostname + req.url); // handle port numbers if you need nondefaults
+    });
+}
+
 // Configuring passport
 var passport = require('passport');
 var expressSession = require('express-session');
