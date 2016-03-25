@@ -8,7 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var api = require('./routes/api');
 
 var app = express();
 
@@ -39,7 +39,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -58,22 +58,34 @@ app.use(function logErrors(err, req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    if(req.headers["content-type"] == 'application/json'){
+        res.status(err.status || 500);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({message: err.message, error: err}));
+    } else {
+        res.status(err.status || 500);
+        res.render('error', {
+          message: err.message,
+          error: err
+        });
+    }
   });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+    if(req.headers["content-type"] == 'application/json'){
+        res.status(err.status || 500);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify({message: err.message, error: {}}));
+    } else {
+        res.status(err.status || 500);
+        res.render('error', {
+          message: err.message,
+          error: {}
+        });
+    }
 });
 
 
