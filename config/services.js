@@ -7,8 +7,13 @@ module.exports = {
         clientSecret: (typeof process.env.OAUTH2_SECRET === 'undefined') ? 'secret' : process.env.OAUTH2_SECRET,
         callbackURL: '/auth/oauth2/callback'
     },
-    express_session: {
-        secret: (typeof process.env.EXPRESSSESSION_SECRET === 'undefined') ? 'secret' : process.env.EXPRESSSESSION_SECRET
+    session: {
+        express: {
+            secret: (typeof process.env.EXPRESSSESSION_SECRET === 'undefined') ? 'secret' : process.env.EXPRESSSESSION_SECRET
+        },
+        firebase: {
+            host: 'papercuts-sessions.firebaseio.com'
+        }
     },
     firebase: {
         url: 'https://papercuts.firebaseio.com/',

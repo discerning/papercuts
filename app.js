@@ -21,10 +21,19 @@ if(config.services.ssl.enabled){
     });
 }
 
+// use firebase store in production
+var expressSession = require('express-session');
+var sessionConfigs = config.services.session.express;
+if (app.get('env') === 'production') {
+    var FirebaseStore = require('connect-firebase')(expressSession);
+    sessionConfigs.store = new FirebaseStore(config.services.session.firebase);
+    sessionConfigs.resave = true;
+    sessionConfigs.saveUninitialized = true;
+}
+app.use(expressSession(sessionConfigs));
+
 // Configuring passport
 var passport = require('passport');
-var expressSession = require('express-session');
-app.use(expressSession({secret: config.services.express_session.secret}));
 app.use(passport.initialize());
 app.use(passport.session());
 require('./services/passport')(passport);
