@@ -52,6 +52,8 @@ router.post('/analysis/:analysis', function(req, res, next) {
 
     // i guess everything checks out - push the new cutflow to the cutflows/<analysis> bucket
     firebase.child('cutflows/'+analysis).push(req.body).then(function(newRef){
+        console.log(firebase.getAuth());
+
         res.status(200);
         res.send(JSON.stringify({
             analysis: analysis,
@@ -61,6 +63,7 @@ router.post('/analysis/:analysis', function(req, res, next) {
         }));
         return;
     }).catch(function(err){
+        console.log(err);
         res.status(500);
         res.send(JSON.stringify({
             analysis: analysis,
