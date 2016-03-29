@@ -17,12 +17,12 @@ var isLoggedIn = function (req, res, next) {
 };
 
 router.get('/auth/oauth2',
-    passport.authenticate('oauth2')
+    passport.authenticate('oauth2', {scope: 'bio'})
 );
 
 router.get('/auth/oauth2/callback',
     passport.authenticate('oauth2', {
-        successRedirect: '/home',
+        successRedirect: '/',
         failureRedirect: '/',
         failureFlash: true
     })
@@ -36,10 +36,6 @@ router.get('/logout', function(req, res){
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'papercuts' });
-});
-
-router.get('/home', isLoggedIn, function(req, res, next) {
-    res.render('home', {});
 });
 
 router.get('/analyses', function(req, res, next) {
