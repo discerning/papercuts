@@ -9,22 +9,8 @@ var json_validator = require('jsonschema').validate;
 router.post('/analysis/:analysis', function(req, res, next) {
     res.setHeader('Content-Type', 'application/json');
     var analysis = req.params.analysis;
-    var token = req.query.token;
-    var firebase = firebaseAuth({uid: 'api', client_secret: token});
 
-    // for some strange reason, we couldn't auth
-    if(!firebase){
-        res.status(500);
-        res.send(JSON.stringify({
-            analysis: analysis,
-            error: true,
-            message: 'Internal client error in setting up firebase authenatication.',
-            results: []
-        }));
-        return;
-    }
-
-    // next: check that the json passes the schema
+    // check that the json passes the schema
     var json_check = json_validator(req.body, schema.cutflow);
     if(!json_check.valid){
         res.status(400);
@@ -61,8 +47,12 @@ router.post('/analysis/:analysis', function(req, res, next) {
         }
         cutflowNames.push(cutflowName);
     }
+
+    var firebase = firebaseAuth({uid: 'api', client_secret: req.query.token});
+
     // i guess everything checks out - push the new cutflow to the cutflows/<analysis> bucket
     firebase.child('cutflows/'+analysis).push(req.body).then(function(newRef){
+        res.status(200);
         res.send(JSON.stringify({
             analysis: analysis,
             error: false,
