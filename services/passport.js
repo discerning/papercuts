@@ -26,7 +26,12 @@ module.exports = function(passport) {
                 res.on('end', function(){
                     var profile = JSON.parse(body);
                     console.log('Profile: %j', profile);
-                    return done(null, profile);
+                    var nameidentifier = profile.filter(function(obj){ return obj.Type == 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier' });
+                    if(nameidentifier.length != 1){
+                        console.log('Missing nameidentifier!');
+                        return done(new Error('Cannot find the nameidentifier in your bio token'));
+                    }
+                    return done(null, {'nameidentifier': nameidentifier[0].Value});
                 });
             }).on('error', function(e){
                 console.log("Got an error: ", e);

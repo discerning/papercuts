@@ -5,7 +5,7 @@ block content
   p Welcome to #{title}.
 
   if locals.user
-    p Click here to #[a(href="/logout") log out].
+    p Hello #{locals.user.nameidentifier}, click here to #[a(href="/logout") log out].
   else
     p Click here to log in via #[a(href="/auth/oauth2") CERN OAuth2].
 
