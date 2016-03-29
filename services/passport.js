@@ -33,7 +33,7 @@ module.exports = function(passport) {
                         var info = userInfo[i];
                         // extract key and value
                         var key = info.Type.split('claims/').pop();
-                        var val = obj.Value;
+                        var val = info.Value;
                         if(!(key in profile)){
                             profile[key] = val;
                         } else {
