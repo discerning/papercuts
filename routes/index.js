@@ -17,7 +17,7 @@ var isLoggedIn = function (req, res, next) {
 };
 
 router.get('/auth/oauth2',
-    passport.authenticate('oauth2')
+    passport.authenticate('oauth2', {scope: 'bio'})
 );
 
 router.get('/auth/oauth2/callback',
