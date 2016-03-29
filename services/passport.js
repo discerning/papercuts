@@ -24,14 +24,32 @@ module.exports = function(passport) {
                 var body = '';
                 res.on('data', function(chunk){ body+= chunk; });
                 res.on('end', function(){
-                    var profile = JSON.parse(body);
-                    console.log('Profile: %j', profile);
-                    var nameidentifier = profile.filter(function(obj){ return obj.Type == 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier' });
-                    if(nameidentifier.length != 1){
-                        console.log('Missing nameidentifier!');
-                        return done(new Error('Cannot find the nameidentifier in your bio token'));
+                    var userInfo = JSON.parse(body);
+                    console.log('User Info: %j', userInfo);
+
+                    // let's build this mofo up
+                    var profile = {};
+                    for(var i in userInfo){
+                        var info = userInfo[i];
+                        // extract key and value
+                        var key = info.Type.split('claims/').pop();
+                        var val = obj.Value;
+                        if(!(key in profile)){
+                            profile[key] = val;
+                        } else {
+                            // already exists
+
+                            // is it an array of values yet?
+                            if(profile[key].constructor === Array){
+                                profile[key].push(val);
+                            } else {
+                                // make it an array
+                                profile[key] = [profile[key], val];
+                            }
+                        }
                     }
-                    return done(null, {'nameidentifier': nameidentifier[0].Value});
+                    console.log('Profile: %j', profile);
+                    return done(null, profile);
                 });
             }).on('error', function(e){
                 console.log("Got an error: ", e);
