@@ -5,7 +5,7 @@ block content
   if exists
     ul
       li Timestamp: #{timestamp}
-      if req.user.PersonID == owner
+      if locals.user.PersonID == owner
         li Owner: #{owner} (that's you!)
       else
         li Owner: #{owner}
