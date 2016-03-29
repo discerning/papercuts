@@ -85,7 +85,7 @@ router.get('/analysis/:analysis/create', isLoggedIn, function(req, res, next) {
             var updatedData = {};
             updatedData["analyses/"+analysis] = {owner: req.user.PersonID, timestamp: Firebase.ServerValue.TIMESTAMP};
             updatedData["client_secrets/"+analysis] = client_secret;
-            snapshot.ref().update(updatedData).then(function(){
+            firebaseAuth({uid: 'papercuts'}).update(updatedData).then(function(){
                 res.render('analysis_created', {analysis: analysis, owner: req.user.PersonID, client_secret: client_secret});
             }).catch(function(err){
                 res.status(500);
