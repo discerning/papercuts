@@ -4,23 +4,23 @@ functions:              #reusable boolean functions
 
 schema:
   type: object
+  additionalProperties: false
   properties:
     # these will contain, for right now, the owner and timestamp (when created)
     analyses:
         type: object
         $analysis:
             type: object
+            additionalProperties: false
             properties:
                 timestamp: {type: number}
                 owner: {type: string}
-            additionalProperties: false
     # when a user OAuth's into our app, we can re-generate the client secret by hashing
     #   our firebase secret with the analysis name -- this should always match what goes in here
     #   and it ensures that we can force everyone to go through our app to get the right token
     client_secrets:
         type: object
         $analysis: {type: string}
-        additionalProperties: false
     # all cutflow data is here
     cutflows:
         type: object
@@ -29,10 +29,6 @@ schema:
             ~$cutflow_id:
                 type: object
                 ~$cutflowName: {type: number}
-                additionalProperties: false
-            additionalProperties: false
-        additionalProperties: false
-  additionalProperties: false
 
 access:
   - location: analyses
