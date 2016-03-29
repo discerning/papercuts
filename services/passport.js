@@ -31,7 +31,7 @@ module.exports = function(passport) {
             }).on('error', function(e){
                 console.log("Got an error: ", e);
                 return done(e);
-            });
+            }).end();
         }
     );
 
