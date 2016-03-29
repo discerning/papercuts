@@ -2,7 +2,8 @@ var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
-var firebase = require('../services/firebase');
+// server-level access to firebase
+var firebase = require('../services/firebase')({uid: 'papercuts'});
 
 /* Authentication Sessions */
 
