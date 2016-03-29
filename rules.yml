@@ -29,7 +29,9 @@ schema:
             type: object
             ~$cutflow_id:
                 type: object
-                ~$cutflowName: {type: number}
+                ~$cutflow_id_index:
+                    type: object
+                    ~$cutflowName: {type: number}
 
 access:
   - location: analyses
