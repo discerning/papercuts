@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= analysis
+  ul
+    li Timestamp: #{timestamp}
+    if req.user.PersonID == owner
+        li Owner: #{owner} (that's you!)
+    else
+        li Owner: #{owner}
