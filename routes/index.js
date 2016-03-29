@@ -71,7 +71,6 @@ router.get('/analysis/:analysis', isLoggedIn, function(req, res, next) {
             data['timestamp'] = snapData.timestamp;
         }
         res.render('analysis', data);
-        }
     });
 });
 
