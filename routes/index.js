@@ -69,8 +69,13 @@ router.get('/analysis/:analysis', isLoggedIn, function(req, res, next) {
             var snapData = snapshot.val();
             data['owner'] = snapData.owner;
             data['timestamp'] = snapData.timestamp;
+            snapshot.root().child('cutflows/'+analysis).once("value", function(snapshot){
+                data['num_cutflows'] = snapshot.numChildren();
+                res.render('analysis', data);
+            });
+        } else {
+            res.render('analysis', data);
         }
-        res.render('analysis', data);
     });
 });
 
