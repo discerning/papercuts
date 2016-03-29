@@ -1,0 +1,53 @@
+functions:              #reusable boolean functions
+  - isServer():         auth.uid == 'papercuts'
+  - analysisExists(a):  root['analyses/'+a].exists()
+
+schema:
+  type: object
+  additionalProperties: false
+  properties:
+    # these will contain, for right now, the owner and timestamp (when created)
+    analyses:
+        type: object
+        $analysis:
+            type: object
+            additionalProperties: false
+            properties:
+                timestamp: {type: number}
+                owner: {type: string}
+    # when a user OAuth's into our app, we can re-generate the client secret by hashing
+    #   our firebase secret with the analysis name -- this should always match what goes in here
+    #   and it ensures that we can force everyone to go through our app to get the right token
+    client_secrets:
+        type: object
+        $analysis: {type: string}
+    # all cutflow data is here
+    cutflows:
+        type: object
+        $analysis:
+            type: object
+            ~$cutflow_id:
+                type: object
+                ~$cutflowName: {type: number}
+
+access:
+  - location: analyses
+    read:     isServer()
+    write:    isServer()
+  - location: analyses/$analysis
+    read:     root['client_secrets/'+$analysis] == auth.client_secret
+  # only the server can write a new object in
+  - location: client_secrets/$analysis
+    read:     false
+    write:    isServer()
+  # let's not read all cutflows at once...
+  - location: cutflows
+    read:     false
+    write:    false
+  # anyone can read cutflows for a specific analysis
+  - location: cutflows/$analysis
+    read:     true
+    write:    isServer()
+  # only those who have access (the server always does and when the api grabs the analysis_name from client_secrets)
+  - location: cutflows/$analysis/$cutflow_id
+    write:    analysisExists($analysis) && root['client_secrets/'+$analysis] == auth.client_secret

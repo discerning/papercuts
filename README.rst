@@ -87,3 +87,16 @@ Lastly, there should not be two instances of the same cutflow inside the array. 
     ]
 
 will be rejected.
+
+Firebase Rules
+==============
+
+A `rules.yml <rules.yml>`_ is provided in the top-level which is meant to be compiled to ``json`` via `blaze <https://github.com/firebase/blaze_compiler>`_::
+
+    blaze rules.yml
+
+The rules enforce what we expect the structure of the database to look like at all times as well as strict access control. Note that in particular, the ``client_secret`` is something like::
+
+    md5(FIREBASE_SECRET+$analysis)
+
+which means that for the API to generate a token with the right authentication scheme, they must provide the correct secret. Note that by this method, the server has the ability to generate the correct secret for a user which provides access. This can be seen as a security flaw, but we are the server and all-powerful.

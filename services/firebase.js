@@ -4,16 +4,11 @@ var config = require('../config');
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require('firebase-token-generator');
 
-var ref = new Firebase(config.services.firebase.url);
 var tokenGenerator = new FirebaseTokenGenerator(config.services.firebase.secret);
 
-ref.authWithCustomToken(tokenGenerator.createToken({uid: 'foo'}),
-    function(err, authData){
-        if(err){
-            console.log("Login Failed!", err);
-        } else {
-            console.log("Login Succeeded!", authData);
-        }
-    });
-
-module.exports = ref;
+// data on the inside for authentication
+module.exports = function(data){
+    var ref = new Firebase(config.services.firebase.url);
+    ref.authWithCustomToken(tokenGenerator.createToken(data));
+    return ref;
+};

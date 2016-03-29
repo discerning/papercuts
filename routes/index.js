@@ -2,7 +2,8 @@ var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
-var firebase = require('../services/firebase');
+// server-level access to firebase
+var firebaseAuth = require('../services/firebase');
 
 /* Authentication Sessions */
 
@@ -43,7 +44,7 @@ router.get('/home', isLoggedIn, function(req, res, next) {
 
 router.get('/analyses', function(req, res, next) {
     // list the analyses
-    firebase.child('analyses').orderByKey().once("value", function(snapshot){
+    firebaseAuth({uid: 'papercuts'}).child('analyses').orderByKey().once("value", function(snapshot){
         var analyses = []
         if(snapshot.exists()){
             snapshot.forEach(function(snapshotChild){
@@ -58,7 +59,7 @@ router.get('/analyses', function(req, res, next) {
 
 router.get('/analysis/:analysis', function(req, res, next) {
     var analysis = req.params.analysis;
-    firebase.child('analyses/'+analysis).once("value", function(snapshot){
+    firebaseAuth({uid: 'papercuts'}).child('analyses/'+analysis).once("value", function(snapshot){
         if(!snapshot.exists()){
             res.status(400);
             return next(new Error('An analysis by that name does not exist!'));
@@ -68,7 +69,7 @@ router.get('/analysis/:analysis', function(req, res, next) {
 
 router.get('/analysis/:analysis/create', function(req, res, next) {
     var analysis = req.params.analysis;
-    firebase.child('analyses/'+analysis).once("value", function(snapshot){
+    firebaseAuth({uid: 'papercuts'}).child('analyses/'+analysis).once("value", function(snapshot){
         if(snapshot.exists()){
             res.status(400);
             return next(new Error('An analysis by that name already exists!'));
