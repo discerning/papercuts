@@ -1,9 +1,15 @@
+var config = require('../config');
+
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
 // server-level access to firebase
 var firebaseAuth = require('../services/firebase');
+var Firebase = require('firebase');
+
+// secret generation
+var md5 = require('md5');
 
 /* Authentication Sessions */
 
@@ -28,7 +34,7 @@ router.get('/auth/oauth2/callback',
     })
 );
 
-router.get('/logout', function(req, res){
+router.get('/logout', function(req, res, next){
     req.logout();
     res.redirect('/');
 });
@@ -53,22 +59,43 @@ router.get('/analyses', function(req, res, next) {
     });
 });
 
-router.get('/analysis/:analysis', function(req, res, next) {
+router.get('/analysis/:analysis', isLoggedIn, function(req, res, next) {
     var analysis = req.params.analysis;
     firebaseAuth({uid: 'papercuts'}).child('analyses/'+analysis).once("value", function(snapshot){
-        if(!snapshot.exists()){
-            res.status(400);
-            return next(new Error('An analysis by that name does not exist!'));
+        var data = {};
+        data['analysis'] = analysis;
+        data['exists'] = snapshot.exists();
+        if(data['exists']){
+            var snapData = snapshot.val();
+            data['owner'] = snapData.owner;
+            data['timestamp'] = snapData.timestamp;
+            firebaseAuth({uid: 'papercuts'}).child('cutflows/'+analysis).once("value", function(snapshot){
+                data['num_cutflows'] = snapshot.numChildren();
+                res.render('analysis', data);
+            });
+        } else {
+            res.render('analysis', data);
         }
     });
 });
 
-router.get('/analysis/:analysis/create', function(req, res, next) {
+router.get('/analysis/:analysis/create', isLoggedIn, function(req, res, next) {
     var analysis = req.params.analysis;
     firebaseAuth({uid: 'papercuts'}).child('analyses/'+analysis).once("value", function(snapshot){
         if(snapshot.exists()){
             res.status(400);
             return next(new Error('An analysis by that name already exists!'));
+        } else {
+            var client_secret = md5(analysis+config.services.firebase.secret);
+            var updatedData = {};
+            updatedData["analyses/"+analysis] = {owner: req.user.PersonID, timestamp: Firebase.ServerValue.TIMESTAMP};
+            updatedData["client_secrets/"+analysis] = client_secret;
+            firebaseAuth({uid: 'papercuts'}).update(updatedData).then(function(){
+                res.render('analysis_created', {analysis: analysis, owner: req.user.PersonID, client_secret: client_secret});
+            }).catch(function(err){
+                res.status(500);
+                return next(err);
+            });
         }
     });
 });

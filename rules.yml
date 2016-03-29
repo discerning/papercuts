@@ -15,6 +15,7 @@ schema:
             properties:
                 timestamp: {type: number}
                 owner: {type: string}
+            constraint: newData.timestamp == now
     # when a user OAuth's into our app, we can re-generate the client secret by hashing
     #   our firebase secret with the analysis name -- this should always match what goes in here
     #   and it ensures that we can force everyone to go through our app to get the right token

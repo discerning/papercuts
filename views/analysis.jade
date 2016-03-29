@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= analysis
+  if exists
+    ul
+      li Timestamp: #{timestamp}
+      if locals.user.PersonID == owner
+        li Owner: #{owner} (that's you!)
+      else
+        li Owner: #{owner}
+      li Num. Cutflows: #{num_cutflows}
+  else
+      p An analysis by that name does not exist yet, would you like to #[a(href='/analysis/'+analysis+'/create') create it now]?
