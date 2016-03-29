@@ -18,8 +18,9 @@ var isLoggedIn = function (req, res, next) {
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated()) return next();
 
-    // if they aren't redirect them to the home page
-    res.redirect('/');
+    // if they aren't, make them log-in
+    req.session.returnTo = req.url;
+    res.redirect('/auth/oauth2');
 };
 
 router.get('/auth/oauth2',
@@ -28,7 +29,8 @@ router.get('/auth/oauth2',
 
 router.get('/auth/oauth2/callback',
     passport.authenticate('oauth2', {
-        successRedirect: '/',
+        // allows us to use url in req.session.returnTo
+        successReturnToOrRedirect: '/',
         failureRedirect: '/',
         failureFlash: true
     })
