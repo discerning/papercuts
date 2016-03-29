@@ -1,10 +1,4 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}.
-
-  if locals.user
-    p Hello #[a(href='/me')= locals.user.name], click here to #[a(href="/logout") log out]. Your OAuth2 token contained the following info:
-  else
-    p Click here to log in via #[a(href="/auth/oauth2") CERN OAuth2].
+    p Do something.
