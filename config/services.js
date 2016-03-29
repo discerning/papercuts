@@ -12,7 +12,7 @@ module.exports = {
             secret: (typeof process.env.EXPRESSSESSION_SECRET === 'undefined') ? 'secret' : process.env.EXPRESSSESSION_SECRET
         },
         firebase: {
-            host: 'https://papercuts-sessions.firebaseio.com'
+            host: 'papercuts-sessions.firebaseio.com'
         }
     },
     firebase: {
