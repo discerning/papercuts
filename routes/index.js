@@ -62,13 +62,15 @@ router.get('/analyses', function(req, res, next) {
 router.get('/analysis/:analysis', isLoggedIn, function(req, res, next) {
     var analysis = req.params.analysis;
     firebaseAuth({uid: 'papercuts'}).child('analyses/'+analysis).once("value", function(snapshot){
-        if(!snapshot.exists()){
-            res.status(400);
-            return next(new Error('An analysis by that name does not exist!'));
-        } else {
-            var data = snapshot.val();
-            data['analysis'] = analysis;
-            res.render('analysis', data);
+        var data = {};
+        data['analysis'] = analysis;
+        data['exists'] = snapshot.exists();
+        if(data['exists']){
+            var snapData = snapshot.val();
+            data['owner'] = snapData.owner;
+            data['timestamp'] = snapData.timestamp;
+        }
+        res.render('analysis', data);
         }
     });
 });

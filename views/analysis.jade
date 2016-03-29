@@ -2,9 +2,12 @@ extends layout
 
 block content
   h1= analysis
-  ul
-    li Timestamp: #{timestamp}
-    if req.user.PersonID == owner
+  if exists
+    ul
+      li Timestamp: #{timestamp}
+      if req.user.PersonID == owner
         li Owner: #{owner} (that's you!)
-    else
+      else
         li Owner: #{owner}
+  else
+      p An analysis by that name does not exist yet, would you like to #[a(href='/analysis/'+analysis+'/create') create it now]?
