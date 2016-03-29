@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    h1= locals.user.name
+
+    ul
+        each val, key in locals.user
+            li #{key}: #{val}

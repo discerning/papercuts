@@ -44,7 +44,11 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'papercuts' });
 });
 
-router.get('/analyses', function(req, res, next) {
+router.get('/me', isLoggedIn, function(req, res, next) {
+    res.render('me');
+});
+
+router.get('/analyses', isLoggedIn, function(req, res, next) {
     // list the analyses
     firebaseAuth({uid: 'papercuts'}).child('analyses').orderByKey().once("value", function(snapshot){
         var analyses = []
