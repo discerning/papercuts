@@ -1,4 +1,40 @@
 extends layout
 
 block content
-    p Do something.
+    div.col-md-8
+        h2 Introduction
+        
+        p The papercuts service allows you to store and analyze cutflows of your high energy physics analysis. The prime use-case is the monitoring of cutflow numbers coming from either batch-processed jobs or continous integration builds over multiple software iterations.
+    
+        p Submission of cutflow objects is done via calling a #[code HTTP] #[code POST] call to #[code= "http://papercuts.cern.ch/api"] with a JSON object as data payload. The JSON object needs to conform to the pre-defined #[a(href="https://github.com/discerning/papercuts/blob/master/public/js/schema/cutflow.json") cutflow schema].
+            
+        p Here is an example document:
+                pre
+                  |[
+                  |    {"duplicate_event": 200000},
+                  |    {"jet_multiplicity": 150000},
+                  |    {"bjet_multiplicity": 63000},
+                  |    {"dphimetmin_geq_0p4": 23000},
+                  |    {"lepton_veto": 1200}
+                  |]
+        
+
+    div.col-md-12
+        h2 Getting Started
+        
+        p You can use a variety of tools to issue the HTTP request, depending on the language you are working with. From the shell, cURL is a popular option. 
+            
+        pre.
+            curl -k -X POST "https://papercuts.cern.ch/api/analysis/bar?token=< YOUR API TOKEN>" --header "Content-Type:application/json" 
+
+        p From Pythin we suggest you use the #[code requests] library to 
+          
+        pre.
+            r = requests.post('https://papercuts.cern.ch/api/analysis/bar?token=< YOUR API TOKEN>', data = cutflow_data)
+          
+        h2 Feedback
+            
+        p For feedback contact
+            ul
+                li Giordon Stark 
+                li Lukas Heinrich
