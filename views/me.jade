@@ -3,6 +3,4 @@ extends layout
 block content
     h1= locals.user.name
 
-    ul
-        each val, key in locals.user
-            li #{key}: #{val}
+    p You are logged in via your CERN account #[code #{locals.user.CommonName}]. 
