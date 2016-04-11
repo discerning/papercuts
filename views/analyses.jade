@@ -1,6 +1,11 @@
 extends layout
 
 block content
-  h1 Logged In!
-  p Welcome to papercuts
-  p= test
+
+  h1 Analyses
+  p Currently we have #{analyses.length} registered Analyses: 
+
+  ul
+    each val in analyses
+      li
+        a(href='/analysis/#{val}') #{val}
